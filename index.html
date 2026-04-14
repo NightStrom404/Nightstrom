@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NightStorm.404 🪽🕊️ | 🦊🦄</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Courier New', monospace;
+      background: #000;
+      overflow: hidden;
+      color: #bf00ff;
+      min-height: 100vh;
+    }
+    
+    /* Multiple canvas layers */
+    #matrix {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -2;
+    }
+    
+    #particles {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+    
+    /* Glitch effect container */
+    .glitch-wrapper {
+      position: relative;
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    .logo {
+      margin-top: 30px;
+      text-align: center;
+      position: relative;
+    }
+    
+    .logo img {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 3px solid #bf00ff;
+      box-shadow: 
+        0 0 15px #bf00ff,
+        0 0 30px #bf00ff,
+        0 0 60px #bf00ff,
+        inset 0 0 20px rgba(191, 0, 255, 0.3);
+      animation: pulse-glow 2s ease-in-out infinite, rotate-slow 20s linear infinite;
+      transition: all 0.3s;
+    }
+    
+    .logo img:hover {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 
+        0 0 30px #00ffff,
+        0 0 60px #00ffff,
+        0 0 100px #00ffff;
+      border-color: #00ffff;
+    }
+    
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 15px #bf00ff, 0 0 30px #bf00ff, 0 0 60px #bf00ff; }
+      50% { box-shadow: 0 0 25px #bf00ff, 0 0 50px #bf00ff, 0 0 100px #bf00ff; }
+    }
+    
+    @keyframes rotate-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Glitch text effect */
+    .nama {
+      font-size: 2.2em;
+      margin-top: 25px;
+      text-align: center;
+      position: relative;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      animation: glitch 3s infinite;
+    }
+    
+    .nama::before,
+    .nama::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .nama::before {
+      left: 2px;
+      text-shadow: -2px 0 #ff00ff;
+      clip: rect(24px, 550px, 90px, 0);
+      animation: glitch-anim-2 3s infinite linear alternate-reverse;
+    }
+    
+    .nama::after {
+      left: -2px;
+      text-shadow: -2px 0 #00ffff;
+      clip: rect(85px, 550px, 140px, 0);
+      animation: glitch-anim 2.5s infinite linear alternate-reverse;
+    }
+    
+    @keyframes glitch {
+      0%, 100% { text-shadow: 0 0 10px #ff1493, 0 0 20px #00ffff, 0 0 30px #bf00ff; }
+      33% { text-shadow: 2px 0 10px #ff1493, -2px 0 20px #00ffff, 0 0 30px #bf00ff; }
+      66% { text-shadow: -2px 0 10px #ff1493, 2px 0 20px #00ffff, 0 0 30px #bf00ff; }
+    }
+    
+    @keyframes glitch-anim {
+      0% { clip: rect(14px, 9999px, 127px, 0); }
+      20% { clip: rect(80px, 9999px, 30px, 0); }
+      40% { clip: rect(30px, 9999px, 90px, 0); }
+      60% { clip: rect(100px, 9999px, 10px, 0); }
+      80% { clip: rect(50px, 9999px, 70px, 0); }
+      100% { clip: rect(120px, 9999px, 40px, 0); }
+    }
+    
+    @keyframes glitch-anim-2 {
+      0% { clip: rect(65px, 9999px, 100px, 0); }
+      20% { clip: rect(20px, 9999px, 60px, 0); }
+      40% { clip: rect(90px, 9999px, 20px, 0); }
+      60% { clip: rect(10px, 9999px, 110px, 0); }
+      80% { clip: rect(70px, 9999px, 50px, 0); }
+      100% { clip: rect(40px, 9999px, 80px, 0); }
+    }
+    
+    .deskripsi {
+      margin: 15px 0 30px 0;
+      text-align: center;
+      color: #00ffff;
+      font-size: 1.2em;
+      animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 3px solid #00ffff;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 10px;
+    }
+    
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    
+    @keyframes blink-caret {
+      from, to { border-color: transparent; }
+      50% { border-color: #00ffff; }
+    }
+    
+    .linktree {
+      text-align: center;
+      perspective: 1000px;
+    }
+    
+    .linktree a {
+      display: block;
+      margin: 12px auto;
+      padding: 16px;
+      width: 300px;
+      border: 2px solid #bf00ff;
+      border-radius: 12px;
+      color: #bf00ff;
+      text-decoration: none;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      font-size: 1.1em;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+    }
+    
+    .linktree a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transition: left 0.5s;
+    }
+    
+    .linktree a:hover::before {
+      left: 100%;
+    }
+    
+    .linktree a:hover {
+      background: linear-gradient(45deg, #ff1493, #bf00ff);
+      color: #fff;
+      transform: translateY(-5px) rotateX(10deg) scale(1.05);
+      box-shadow: 
+        0 10px 30px rgba(191, 0, 255, 0.5),
+        0 0 30px #00ffff,
+        inset 0 0 20px rgba(255, 255, 255, 0.2);
+      border-color: #fff;
+      text-shadow: 0 0 10px #fff;
+    }
+    
+    .linktree a:active {
+      transform: translateY(-2px) scale(0.98);
+    }
+    
+    /* Social icons */
+    .linktree a::after {
+      margin-left: 10px;
+      font-size: 1.2em;
+    }
+    
+    /* Color button with ripple effect */
+    .color-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      cursor: pointer;
+      background: #bf00ff;
+      box-shadow: 0 0 20px #bf00ff, inset 0 0 10px rgba(255,255,255,0.3);
+      z-index: 10;
+      transition: all 0.3s;
+      overflow: hidden;
+    }
+    
+    .color-btn:hover {
+      transform: scale(1.2) rotate(180deg);
+      box-shadow: 0 0 40px currentColor;
+    }
+    
+    .color-btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.5em;
+    }
+    
+    /* Stats counter */
+    .stats {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      color: #00ffff;
+      font-size: 0.9em;
+      opacity: 0.7;
+      z-index: 10;
+    }
+    
+    /* Music visualizer bars */
+    .visualizer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 3px;
+      z-index: 5;
+      pointer-events: none;
+    }
+    
+    .bar {
+      width: 4px;
+      background: linear-gradient(to top, #bf00ff, #00ffff);
+      border-radius: 2px 2px 0 0;
+      animation: equalizer 1s ease-in-out infinite;
+    }
+    
+    @keyframes equalizer {
+      0%, 100% { height: 10px; }
+      50% { height: 50px; }
+    }
+    
+    /* Scanline effect */
+    .scanlines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0),
+        rgba(255,255,255,0) 50%,
+        rgba(0,0,0,0.2) 50%,
+        rgba(0,0,0,0.2)
+      );
+      background-size: 100% 4px;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.3;
+    }
+    
+    /* Responsive */
+    @media (min-width: 800px) {
+      .logo img { width: 120px; height: 120px; }
+      .nama { font-size: 1.8em; }
+      .deskripsi { font-size: 1em; }
+      .linktree a { width: 260px; font-size: 1em; padding: 14px; }
+    }
+    
+    @media (max-width: 480px) {
+      .nama { font-size: 1.6em; letter-spacing: 1px; }
+      .linktree a { width: 90%; max-width: 300px; }
+    }
+  </style>
+  <script src="https://www.google.com/recaptcha/api.js?render=6LcHOHgsAAAAAPG2vR5RvQ2HXGIUaFHGMR_EBWGu"></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  
+  <meta property="og:title" content="NightStorm.404 🪽🕊️">
+<meta property="og:description" content="Official NightStorm404">
+<meta property="og:image" content="https://nightstrom404.my.id/ewe.png">
+<meta property="og:url" content="https://nightstrom404.my.id/">
+<meta property="og:type" content="website">
+<meta property="og:image:type" content="image/png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="google-site-verification" content="epzVOzGFNrfAk8nHV4WHfZRf_uar9BD1shrUiAlllwY" />
+
+</head>
+<body>
+  <canvas id="matrix"></canvas>
+  <canvas id="particles"></canvas>
+  <div class="scanlines"></div>
+  
+  <div class="glitch-wrapper">
+    <div class="logo">
+      <img src="https://image2url.com/r2/default/images/1771904360912-8e4b00e0-8620-4224-a222-013037f4f0f5.blob" alt="NightStorm Logo">
+    </div>
+    <div class="nama" data-text="NightStorm.404 🪽🕊️">NightStorm.404 🪽🕊️</div>
+    <div class="deskripsi" id="typing-text">Welcome To All</div>
+  </div>
+
+  <div class="linktree">
+    <a href="https://www.tiktok.com/@_nightstorm1?_r=1&_t=ZS-94B9DsfGTli" target="_blank"> TikTok</a>
+    <a href="https://wa.me/6285763715052?text=Hallo%20bang%20nightstrom%20apa%20kabar" target="_blank"> WhatsApp</a>
+    <a href="https://t.me/NIGHTSTROM403" target="_blank"> Telegram</a>
+    <a href="https://t.me/NightStrom404" target="_blank">  Channel NightStorm</a>
+  </div>
+
+  <div class="color-btn" id="colorBtn" title="Ganti Tema Warna"></div>
+  
+  <div class="stats" id="stats">Visitor: <span id="visitorCount">0</span> | Online: <span id="onlineCount">1</span></div>
+  
+  <div class="visualizer" id="visualizer">
+    <!-- Bars generated by JS -->
+  </div>
+
+  <audio id="bgm" src="hacker.mp3" loop></audio>
+
+  <script>
+    // Matrix effect with enhanced characters
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    
+    function resizeCanvas() {
+      canvas.height = window.innerHeight;
+      canvas.width = window.innerWidth;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const letters = '01夜嵐404🪽🕊️アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+    const fontSize = 16;
+    let columns = canvas.width / fontSize;
+    let drops = [];
+    
+    function initDrops() {
+      columns = canvas.width / fontSize;
+      drops = [];
+      for (let x = 0; x < columns; x++) drops[x] = Math.random() * -100;
+    }
+    initDrops();
+    window.addEventListener('resize', initDrops);
+
+    const colors = ['#bf00ff', '#00ffff', '#ff1493', '#39ff14', '#ff073a', '#ffff00', '#ff6600'];
+    let current = 0;
+
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(0,0,0,0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = colors[current];
+      ctx.font = fontSize + 'px monospace';
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = colors[current];
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+        
+        // Random brightness for depth effect
+        ctx.globalAlpha = Math.random() * 0.5 + 0.5;
+        ctx.fillText(text, x, y);
+        ctx.globalAlpha = 1;
+
+        if (y > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+      ctx.shadowBlur = 0;
+    }
+    setInterval(drawMatrix, 50);
+
+    // Particle system
+    const pCanvas = document.getElementById('particles');
+    const pCtx = pCanvas.getContext('2d');
+    pCanvas.width = window.innerWidth;
+    pCanvas.height = window.innerHeight;
+    
+    const particles = [];
+    const particleCount = 50;
+    
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+      
+      reset() {
+        this.x = Math.random() * pCanvas.width;
+        this.y = Math.random() * pCanvas.height;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = (Math.random() - 0.5) * 2;
+        this.speedY = (Math.random() - 0.5) * 2;
+        this.life = 1;
+        this.decay = Math.random() * 0.01 + 0.005;
+      }
+      
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.life -= this.decay;
+        
+        if (this.life <= 0 || this.x < 0 || this.x > pCanvas.width || this.y < 0 || this.y > pCanvas.height) {
+          this.reset();
+        }
+      }
+      
+      draw() {
+        pCtx.beginPath();
+        pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        pCtx.fillStyle = colors[current] + Math.floor(this.life * 255).toString(16).padStart(2, '0');
+        pCtx.fill();
+      }
+    }
+    
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+    
+    function animateParticles() {
+      pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // Color button
+    const colorBtn = document.getElementById('colorBtn');
+    colorBtn.addEventListener('click', () => {
+      current = (current + 1) % colors.length;
+      const newColor = colors[current];
+      colorBtn.style.background = newColor;
+      colorBtn.style.boxShadow = `0 0 20px ${newColor}, inset 0 0 10px rgba(255,255,255,0.3)`;
+      
+      // Update CSS variables dynamically
+      document.documentElement.style.setProperty('--theme-color', newColor);
+      
+      // Flash effect
+      document.body.style.background = newColor;
+      setTimeout(() => {
+        document.body.style.background = '#000';
+      }, 100);
+    });
+
+    // Audio with visualizer
+    const bgm = document.getElementById('bgm');
+    const visualizer = document.getElementById('visualizer');
+    
+    // Create visualizer bars
+    for (let i = 0; i < 30; i++) {
+      const bar = document.createElement('div');
+      bar.className = 'bar';
+      bar.style.animationDelay = `${i * 0.1}s`;
+      bar.style.height = `${Math.random() * 40 + 10}px`;
+      visualizer.appendChild(bar);
+    }
+    
+    // Interactive audio start
+    let audioStarted = false;
+    document.body.addEventListener('click', (e) => {
+      if (!audioStarted && e.target.tagName !== 'A') {
+        bgm.volume = 0.5;
+        bgm.play().catch(() => {});
+        audioStarted = true;
+        
+        // Animate visualizer based on "fake" audio data
+        setInterval(() => {
+          const bars = document.querySelectorAll('.bar');
+          bars.forEach(bar => {
+            const height = Math.random() * 50 + 10;
+            bar.style.height = `${height}px`;
+          });
+        }, 200);
+      }
+    });
+
+    // Visitor counter simulation
+    let visitors = Math.floor(Math.random() * 1000) + 500;
+    document.getElementById('visitorCount').textContent = visitors;
+    
+    setInterval(() => {
+      if (Math.random() > 0.7) {
+        visitors++;
+        document.getElementById('visitorCount').textContent = visitors;
+      }
+    }, 5000);
+    
+    // Random online count
+    setInterval(() => {
+      const online = Math.floor(Math.random() * 5) + 1;
+      document.getElementById('onlineCount').textContent = online;
+    }, 3000);
+
+    // Parallax effect on mouse move
+    document.addEventListener('mousemove', (e) => {
+      const x = (window.innerWidth - e.pageX) / 50;
+      const y = (window.innerHeight - e.pageY) / 50;
+      
+      document.querySelector('.logo').style.transform = `translateX(${x}px) translateY(${y}px)`;
+      document.querySelector('.nama').style.transform = `translateX(${x * 0.5}px) translateY(${y * 0.5}px)`;
+    });
+
+    // Konami code easter egg
+    let konami = [];
+    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    
+    document.addEventListener('keydown', (e) => {
+      konami.push(e.key);
+      konami = konami.slice(-10);
+      
+      if (konami.join(',') === konamiCode.join(',')) {
+        document.body.style.animation = 'glitch 0.3s infinite';
+        setTimeout(() => {
+          document.body.style.animation = '';
+          alert('🎮 Cheat Code Activated! NightStorm Mode ON! 🪽🕊️');
+        }, 1000);
+      }
+    });
+
+    // Typing effect enhancement
+    const texts = ['Welcome To All', 'Cyber Security Enthusiast', 'NightStorm.404', '🦊🦄'];
+    let textIndex = 0;
+    const typingElement = document.getElementById('typing-text');
+    
+    setInterval(() => {
+      textIndex = (textIndex + 1) % texts.length;
+      typingElement.textContent = texts[textIndex];
+      typingElement.style.animation = 'none';
+      setTimeout(() => {
+        typingElement.style.animation = 'typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite';
+      }, 10);
+    }, 5000);
+  </script>
+  <script>
+grecaptcha.ready(function() {
+    grecaptcha.execute('6LcHOHgsAAAAAPG2vR5RvQ2HXGIUaFHGMR_EBWGu', {action: 'homepage'}).then(function(token) {
+
+        fetch("api.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "token=" + token
+        })
+        .then(res => res.text())
+        .then(response => {
+            if(response === "blocked"){
+                window.location.href = "blocked.html";
+            }
+        });
+
+    });
+});
+function onSuccess(token) {
+
+    fetch("ewe.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: "token=" + token
+    })
+    .then(res => res.text())
+    .then(response => {
+        if(response !== "OK"){
+            window.location.href = "blocked.html";
+        }
+    });
+    
+}
+</script>
+</body>
+</html>
