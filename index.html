@@ -32,11 +32,11 @@
     --ink:#25231f;
     --ink-soft:#57534a;
     --line:#25231f;
-    --spot-1:#e8542e;   /* riso orange-red */
-    --spot-2:#1f8a7c;   /* riso teal */
-    --spot-3:#f4b942;   /* riso yellow */
-    --spot-4:#5b5fc7;   /* riso indigo */
-    --accent:#7c3aed;   /* fixed purple */
+    --spot-1:#e8542e;
+    --spot-2:#1f8a7c;
+    --spot-3:#f4b942;
+    --spot-4:#5b5fc7;
+    --accent:#7c3aed;
     --card:#fffdf7;
     --font-display:'Space Grotesk', system-ui, sans-serif;
     --font-hand:'Caveat', cursive;
@@ -58,7 +58,6 @@
 
   a{ color: inherit; }
 
-  /* subtle paper grain */
   .grain{
     position: fixed; inset:0; z-index: 40; pointer-events: none;
     opacity: .18; mix-blend-mode: multiply;
@@ -89,15 +88,13 @@
     pointer-events:none;
   }
 
-  /* ---------- shell ---------- */
   .page{
     position: relative; z-index: 1;
-    width: 100%; max-width: 600px; margin: 0 auto;
+    width: 100%; max-width: 800px; margin: 0 auto;
     padding: clamp(26px, 6vw, 50px) clamp(16px, 5vw, 26px) 130px;
     display: flex; flex-direction: column; align-items: center;
   }
 
-  /* ---------- hero ---------- */
   .stamp{
     display: inline-flex; align-items: center; gap: 7px;
     padding: 6px 13px;
@@ -179,7 +176,6 @@
     max-width: 380px;
   }
 
-  /* ---------- bot tickets ---------- */
   .bot-stack{ width:100%; margin-top: 30px; display:flex; flex-direction:column; gap: 14px; }
 
   .ticket{
@@ -236,7 +232,6 @@
   }
   .ticket.pro .ticket-go{ background: var(--spot-2); color: var(--card); }
 
-  /* ---------- socials ---------- */
   .section-label{
     width: 100%; margin-top: 40px; margin-bottom: 14px;
     display:flex; align-items:center; gap: 10px;
@@ -276,7 +271,86 @@
   }
   .link-icon svg{ width: 17px; height: 17px; }
 
-  /* ---------- player ---------- */
+  /* Docs & Tools - Full Content Styles */
+  .docs-grid, .tools-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .doc-card, .tool-card {
+    background: var(--card);
+    border: 2.5px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 4px 4px 0 var(--line);
+    overflow: hidden;
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .doc-card:nth-child(odd), .tool-card:nth-child(odd) { transform: rotate(-0.3deg); }
+  .doc-card:nth-child(even), .tool-card:nth-child(even) { transform: rotate(0.3deg); }
+  .doc-card:hover, .tool-card:hover {
+    transform: translate(-3px,-3px) rotate(0deg);
+    box-shadow: 7px 7px 0 var(--line);
+  }
+
+  .doc-card-header, .tool-card-header {
+    padding: 14px 18px;
+    background: var(--paper-dark);
+    border-bottom: 2.5px solid var(--line);
+    font-family: var(--font-hand);
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: .2px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .doc-card-body, .tool-card-body {
+    padding: 0;
+    font-size: .75rem;
+    color: var(--ink);
+    line-height: 1.5;
+    font-family: var(--font-mono);
+    background: #1e1b16;
+    max-height: 500px;
+    overflow-y: auto;
+  }
+
+  .doc-card-body pre, .tool-card-body pre {
+    padding: 16px 18px;
+    margin: 0;
+    font-size: .72rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: #e8e4da;
+    background: transparent;
+  }
+
+  .copy-btn {
+    padding: 4px 10px;
+    border: 1.5px solid var(--line);
+    border-radius: 6px;
+    background: var(--spot-3);
+    font-family: var(--font-mono);
+    font-size: .65rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .15s ease;
+    white-space: nowrap;
+  }
+  .copy-btn:hover {
+    background: var(--spot-1);
+    color: var(--card);
+    transform: scale(1.05);
+  }
+  .copy-btn.copied {
+    background: var(--spot-2);
+    color: var(--card);
+  }
+
   .player{
     position: fixed; bottom:0; left:0; right:0; z-index:50;
     display:flex; align-items:center; justify-content:center;
@@ -390,6 +464,600 @@
         </a>
       </div>
     </nav>
+
+    <!-- Docs Section - Full JSON -->
+    <nav aria-label="Docs">
+      <div class="section-label">Docs</div>
+      <div class="docs-grid">
+        <!-- Quillbot AI -->
+        <div class="doc-card">
+          <div class="doc-card-header">Quillbot AI <button class="copy-btn" data-copy="quillbot">Copy</button></div>
+          <div class="doc-card-body">
+<pre id="quillbot">{
+    "quillbot_ai_chat": {
+        "url": "https://quillbot.com/api/ai-chat/chat/conversation/{conversation_id}",
+        "method": "POST",
+        "headers": {
+            "cache-control": "max-age=0",
+            "sec-ch-ua-platform": "\"Android\"",
+            "platform-type": "webapp",
+            "qb-product": "AI-CHAT",
+            "sec-ch-ua": "\"Not=A?Brand\";v=\"99\", \"Google Chrome\";v=\"151\", \"Chromium\";v=\"151\"",
+            "sec-ch-ua-mobile": "?1",
+            "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36",
+            "accept": "text/event-stream",
+            "webapp-version": "44.90.6",
+            "content-type": "application/json",
+            "origin": "https://quillbot.com",
+            "sec-fetch-site": "same-origin",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-dest": "empty",
+            "referer": "https://quillbot.com/ai-chat",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "en-US,en;q=0.9,id-ID;q=0.8,id;q=0.7",
+            "cookie": "authenticated=false; premium=false; qdid=d4fa7687d70b0c57061af00b293cc7f0; connect.sid=s%3A5T52KVP3RIuVipWxRA7DkZmj9OsscpPV.RAaiKM9oWLlcuYQlOx%2Btj0jaWBPyyyj92xpoZBLDMtE"
+        },
+        "body": {
+            "message": {
+                "content": "INPUT_PESAN_KAMU\n\n"
+            },
+            "context": {
+                "editorContext": "",
+                "selectionContext": "",
+                "userDialect": "en-us",
+                "apiVersion": 2
+            },
+            "origin": {
+                "name": "ai-chat.chat",
+                "url": "https://quillbot.com"
+            }
+        }
+    }
+}</pre>
+          </div>
+        </div>
+
+        <!-- SpicyChat AI -->
+        <div class="doc-card">
+          <div class="doc-card-header">SpicyChat AI <button class="copy-btn" data-copy="spicychat">Copy</button></div>
+          <div class="doc-card-body">
+<pre id="spicychat">{
+    "spicychat_ai": {
+        "base_url": "https://prod.nd-api.com",
+        "headers": {
+            "x-platform": "WEB",
+            "x-platform-os": "ANDROID",
+            "x-guest-userid": "572c52ee-4c87-4e01-886d-c387c6067bcc",
+            "x-app-id": "spicychat",
+            "x-app-version": "2.44.0",
+            "x-country": "ID",
+            "content-type": "application/json",
+            "accept": "application/json, text/plain, */*",
+            "origin": "https://spicychat.ai",
+            "referer": "https://spicychat.ai/",
+            "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36",
+            "sec-ch-ua": "\"Not=A?Brand\";v=\"99\", \"Google Chrome\";v=\"151\", \"Chromium\";v=\"151\"",
+            "sec-ch-ua-mobile": "?1",
+            "sec-ch-ua-platform": "\"Android\"",
+            "accept-language": "en-US,en;q=0.9,id-ID;q=0.8,id;q=0.7",
+            "priority": "u=1, i"
+        },
+        "endpoints": {
+            "chat": {
+                "url": "https://prod.nd-api.com/chat",
+                "method": "POST",
+                "body": {
+                    "conversation_id": null,
+                    "character_id": "bfcbb334-183c-4c5e-9dde-c544a5a67795",
+                    "language": "id",
+                    "inference_model": "default",
+                    "inference_settings": {
+                        "max_new_tokens": 180,
+                        "temperature": 0.7,
+                        "top_p": 0.7,
+                        "top_k": 90
+                    },
+                    "autopilot": false,
+                    "continue_chat": false,
+                    "message": "INPUT_PESAN"
+                }
+            },
+            "get_messages": {
+                "url": "https://prod.nd-api.com/characters/bfcbb334-183c-4c5e-9dde-c544a5a67795/messages/gid_6cb841e3-7b6c-4af8-9fab-bded4c943fde",
+                "method": "GET",
+                "params": {
+                    "limit": 50
+                }
+            }
+        }
+    }
+}</pre>
+          </div>
+        </div>
+
+        <!-- Kaspersky WhoCalls -->
+        <div class="doc-card">
+          <div class="doc-card-header">Kaspersky WhoCalls <button class="copy-btn" data-copy="kaspersky">Copy</button></div>
+          <div class="doc-card-body">
+<pre id="kaspersky">{
+    "kaspersky_whocalls": {
+        "cek_info_nomor": {
+            "url": "https://api-router.kaspersky-labs.com/whocalls/v2/number",
+            "method": "GET",
+            "params": {
+                "language": "id",
+                "number": "NOMOR_TUJUAN"
+            },
+            "headers": {
+                "sec-ch-ua-platform": "\"Android\"",
+                "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36",
+                "accept": "application/json",
+                "sec-ch-ua": "\"Not=A?Brand\";v=\"99\", \"Google Chrome\";v=\"151\", \"Chromium\";v=\"151\"",
+                "content-type": "application/json",
+                "sec-ch-ua-mobile": "?1",
+                "origin": "https://whocalls.id.kaspersky.com",
+                "sec-fetch-site": "cross-site",
+                "sec-fetch-mode": "cors",
+                "sec-fetch-dest": "empty",
+                "referer": "https://whocalls.id.kaspersky.com/",
+                "accept-encoding": "gzip, deflate, br, zstd",
+                "accept-language": "en-US,en;q=0.9,id-ID;q=0.8,id;q=0.7",
+                "priority": "u=1, i"
+            }
+        },
+        "cari_nomor_serupa": {
+            "url": "https://api-router.kaspersky-labs.com/whocalls/similar-numbers",
+            "method": "GET",
+            "params": {
+                "region": "ID",
+                "number": "NOMOR_TUJUAN"
+            },
+            "headers": {
+                "sec-ch-ua-platform": "\"Android\"",
+                "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36",
+                "accept": "application/json",
+                "sec-ch-ua": "\"Not=A?Brand\";v=\"99\", \"Google Chrome\";v=\"151\", \"Chromium\";v=\"151\"",
+                "content-type": "application/json",
+                "sec-ch-ua-mobile": "?1",
+                "origin": "https://whocalls.id.kaspersky.com",
+                "sec-fetch-site": "cross-site",
+                "sec-fetch-mode": "cors",
+                "sec-fetch-dest": "empty",
+                "referer": "https://whocalls.id.kaspersky.com/",
+                "accept-encoding": "gzip, deflate, br, zstd",
+                "accept-language": "en-US,en;q=0.9,id-ID;q=0.8,id;q=0.7",
+                "priority": "u=1, i"
+            }
+        }
+    }
+}</pre>
+          </div>
+        </div>
+
+        <!-- Free AI Chat -->
+        <div class="doc-card">
+          <div class="doc-card-header">Free AI Chat <button class="copy-btn" data-copy="freeai">Copy</button></div>
+          <div class="doc-card-body">
+<pre id="freeai">{
+    "free_ai_chat": {
+        "url": "https://api.free.ai/v1/chat/",
+        "method": "POST",
+        "headers": {
+            "sec-ch-ua-platform": "\"Android\"",
+            "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36",
+            "sec-ch-ua": "\"Not=A?Brand\";v=\"99\", \"Google Chrome\";v=\"151\", \"Chromium\";v=\"151\"",
+            "content-type": "application/json",
+            "sec-ch-ua-mobile": "?1",
+            "accept": "*/*",
+            "origin": "https://free.ai",
+            "sec-fetch-site": "same-site",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-dest": "empty",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "en-US,en;q=0.9,id-ID;q=0.8,id;q=0.7",
+            "priority": "u=1, i"
+        },
+        "body": {
+            "model": "qwen7b",
+            "stream": false,
+            "max_tokens": 120,
+            "lang": "en",
+            "messages": [
+                {
+                    "role": "system",
+                    "content": "INPUT_SYSTEM_PROMPT"
+                },
+                {
+                    "role": "user",
+                    "content": "INPUT_PESAN_USER"
+                }
+            ]
+        }
+    }
+}</pre>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Tools Section - Full Code -->
+    <nav aria-label="Tools">
+      <div class="section-label">Tools</div>
+      <div class="tools-grid">
+        <!-- Generate Image -->
+        <div class="tool-card">
+          <div class="tool-card-header">Generate Image <button class="copy-btn" data-copy="genimage">Copy</button></div>
+          <div class="tool-card-body">
+<pre id="genimage">{
+    "url": "https://gpu4.free.ai/v1/image/generate/",
+    "method": "POST",
+    "headers": {
+        "accept": "*/*",
+        "accept-language": "en-US,en;q=0.9,id-ID;q=0.8,id;q=0.7",
+        "content-type": "application/json",
+        "origin": "https://free.ai",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "sec-fetch-dest": "empty",
+        "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36",
+        "sec-ch-ua": "\"Not=A?Brand\";v=\"99\", \"Google Chrome\";v=\"151\", \"Chromium\";v=\"151\"",
+        "sec-ch-ua-mobile": "?1",
+        "sec-ch-ua-platform": "\"Android\"",
+        "priority": "u=1, i"
+    },
+    "body": {
+        "prompt": "Dragon",
+        "negative_prompt": "",
+        "model": "sdxl",
+        "aspect_ratio": "1:1",
+        "style": "none"
+    }
+}</pre>
+          </div>
+        </div>
+
+        <!-- Scan Repo - Full Python -->
+        <div class="tool-card">
+          <div class="tool-card-header">Scan Repo (Python) <button class="copy-btn" data-copy="scanrepo">Copy</button></div>
+          <div class="tool-card-body">
+<pre id="scanrepo">import os
+import json
+import time
+import requests
+from urllib.parse import urlparse
+
+SCANREPO_API = "https://www.scanrepo.dev/api/scan"
+USER_AGENT = "ScanRepoCLI/1.0"
+
+def clear_screen():
+    os.system("cls" if os.name == "nt" else "clear")
+
+def banner():
+    print(r"""
+   _____                       _____
+  / ____|                     |  __ \\
+ | (___   ___ __ _ _ __       | |__) |___ _ __   ___
+  \\___ \\ / __/ _` | '_ \\      |  _  // _ \\ '_ \\ / _ \\
+  ____) | (_| (_| | | | |     | | \\ \\  __/ |_) | (_) |
+ |_____/ \\___\\__,_|_| |_|     |_|  \\_\\___| .__/ \\___/
+                                          | |
+                                          |_|
+
+                 GITHUB REPO SCANNER
+              Security & Code Analysis CLI
+""")
+
+def status(message, level="*"):
+    now = time.strftime("%H:%M:%S")
+    print(f"[{now}] [{level}] {message}")
+
+def valid_github_url(url):
+    try:
+        parsed = urlparse(url)
+        if parsed.scheme not in ("http", "https"):
+            return False
+        if parsed.netloc.lower() not in ("github.com", "www.github.com"):
+            return False
+        path = parsed.path.strip("/")
+        return len(path.split("/")) >= 2
+    except Exception:
+        return False
+
+def get_repo_url():
+    print("  Masukkan URL repository GitHub")
+    print("  Contoh: https://github.com/user/repository")
+    print()
+    while True:
+        url = input("  GitHub URL > ").strip()
+        if not url:
+            print("  [!] URL tidak boleh kosong.\\n")
+            continue
+        if not valid_github_url(url):
+            print("  [!] URL GitHub tidak valid.\\n")
+            continue
+        return url
+
+def start_scan(repo_url):
+    headers = {
+        "User-Agent": USER_AGENT,
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+    }
+    status("Mengirim scan request...")
+    status(f"Repository : {repo_url}")
+    try:
+        response = requests.post(
+            SCANREPO_API,
+            json={"url": repo_url, "force": False},
+            headers=headers,
+            timeout=30
+        )
+        status(f"HTTP Status: {response.status_code}", "*" if response.ok else "!")
+        if not response.ok:
+            return None, None
+        scan_id = None
+        result = None
+        for line in response.text.strip().splitlines():
+            if not line.strip():
+                continue
+            try:
+                data = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if data.get("type") == "progress":
+                step = data.get("step", "unknown")
+                progress = data.get("progress", 0)
+                status(f"{step} - {progress}%")
+            elif data.get("type") == "result":
+                result = data.get("data", {})
+                scan_id = result.get("commitSha")
+                status("Scan selesai.", "+")
+        return scan_id, result
+    except requests.Timeout:
+        status("Request timeout.", "!")
+        return None, None
+    except requests.ConnectionError:
+        status("Tidak dapat terhubung ke ScanRepo.", "!")
+        return None, None
+    except requests.RequestException as error:
+        status(f"Request error: {error}", "!")
+        return None, None
+    except Exception as error:
+        status(f"Error: {error}", "!")
+        return None, None
+
+def wrap_text(text, width=52):
+    if not text:
+        return ["-"]
+    words = str(text).split()
+    lines = []
+    current = ""
+    for word in words:
+        if len(current) + len(word) + 1 > width:
+            lines.append(current)
+            current = word
+        else:
+            current += (" " if current else "") + word
+    if current:
+        lines.append(current)
+    return lines
+
+def clean_snippet(snippet):
+    if not snippet:
+        return None
+    snippet = str(snippet).replace("\\n", " ").replace("\\r", " ").replace("\\t", " ")
+    snippet = " ".join(snippet.split())
+    if len(snippet) > 150:
+        snippet = snippet[:150] + "..."
+    return snippet
+
+def show_finding(number, finding):
+    title = finding.get("title", "Unknown finding")
+    severity = finding.get("severity", "unknown")
+    category = finding.get("category", "unknown")
+    rule_id = finding.get("ruleId", "unknown")
+    points = finding.get("points", 0)
+    file_path = finding.get("filePath") or "-"
+    description = finding.get("description", "No description available.")
+    snippet = clean_snippet(finding.get("snippet"))
+    print()
+    print("  ┌" + "─" * 58 + "┐")
+    print(f"  │ FINDING #{number:<47} │")
+    print("  ├" + "─" * 58 + "┤")
+    print(f"  │ Title    : {title[:47]:<47} │")
+    print(f"  │ Severity : {severity:<47} │")
+    print(f"  │ Category : {category:<47} │")
+    print(f"  │ Rule ID  : {rule_id:<47} │")
+    print(f"  │ Points   : {str(points):<47} │")
+    print("  │ File     :")
+    for line in wrap_text(file_path):
+        print(f"  │   {line:<54}│")
+    print("  │")
+    print("  │ Description:")
+    for line in wrap_text(description):
+        print(f"  │   {line:<54}│")
+    if snippet:
+        print("  │")
+        print("  │ Snippet:")
+        for line in wrap_text(snippet):
+            print(f"  │   {line:<54}│")
+    print("  └" + "─" * 58 + "┘")
+
+def show_findings(findings):
+    print()
+    print("┌" + "─" * 60 + "┐")
+    print("│ FINDINGS" + " " * 51 + "│")
+    print("└" + "─" * 60 + "┘")
+    if not findings:
+        print()
+        print("  Tidak ada findings.")
+        return
+    for number, finding in enumerate(findings, 1):
+        show_finding(number, finding)
+
+def show_badges(badges):
+    if not badges:
+        return
+    print()
+    print("┌" + "─" * 60 + "┐")
+    print("│ REPOSITORY INFO" + " " * 44 + "│")
+    print("└" + "─" * 60 + "┘")
+    for badge in badges:
+        label = badge.get("label", "unknown")
+        description = badge.get("description", "")
+        print()
+        print(f"  • {label}")
+        for line in wrap_text(description, 56):
+            print(f"    {line}")
+
+def show_result(result):
+    if not result:
+        status("Tidak ada data hasil scan.", "!")
+        return
+    meta = result.get("meta", {})
+    repository = meta.get("repo", "unknown")
+    language = meta.get("language", "unknown")
+    risk_score = result.get("riskScore", 0)
+    risk_level = result.get("riskLevel", "unknown")
+    findings = result.get("findings", [])
+    badges = result.get("badges", [])
+    print()
+    print("╔══════════════════════════════════════════════════════════════╗")
+    print("║                       SCAN RESULT                            ║")
+    print("╚══════════════════════════════════════════════════════════════╝")
+    print()
+    print(f"  Repository : {repository}")
+    print(f"  Language   : {language}")
+    print(f"  Risk Score : {risk_score}")
+    print(f"  Risk Level : {risk_level}")
+    print(f"  Findings   : {len(findings)}")
+    show_findings(findings)
+    show_badges(badges)
+    print()
+    print("═" * 62)
+
+def main():
+    clear_screen()
+    banner()
+    repo_url = get_repo_url()
+    print()
+    status("Memulai proses scanning...")
+    scan_id, result = start_scan(repo_url)
+    if not scan_id:
+        print()
+        status("Gagal mendapatkan hasil scan.", "!")
+        return
+    print()
+    status(f"Scan ID : {scan_id}", "+")
+    status("Memproses hasil scan...")
+    show_result(result)
+
+def run():
+    while True:
+        try:
+            main()
+            print()
+            print("  " + "─" * 58)
+            print()
+            choice = input("  Scan repository lain? [y/N] > ").strip().lower()
+            if choice != "y":
+                print()
+                status("Program selesai. Sampai jumpa.", "+")
+                break
+            clear_screen()
+            banner()
+        except KeyboardInterrupt:
+            print()
+            status("Program dihentikan oleh user.", "!")
+            break
+        except Exception as error:
+            print()
+            status(f"Error: {error}", "!")
+            break
+
+if __name__ == "__main__":
+    run()</pre>
+          </div>
+        </div>
+
+        <!-- Download TikTok -->
+        <div class="tool-card">
+          <div class="tool-card-header">Download TikTok <button class="copy-btn" data-copy="tiktok">Copy</button></div>
+          <div class="tool-card-body">
+<pre id="tiktok">const response = await axios({
+    method: 'POST',
+    url: 'https://tikwm.com/api/',
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'Cookie': 'current_language=en',
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36'
+    },
+    data: encodedParams,
+    timeout: 30000
+});</pre>
+          </div>
+        </div>
+
+        <!-- Cek Nomor -->
+        <div class="tool-card">
+          <div class="tool-card-header">Cek Nomor <button class="copy-btn" data-copy="ceknomor">Copy</button></div>
+          <div class="tool-card-body">
+<pre id="ceknomor">{
+    "kaspersky_whocalls": {
+        "cek_info_nomor": {
+            "url": "https://api-router.kaspersky-labs.com/whocalls/v2/number",
+            "method": "GET",
+            "params": {
+                "language": "id",
+                "number": "NOMOR_TUJUAN"
+            },
+            "headers": {
+                "sec-ch-ua-platform": "\"Android\"",
+                "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36",
+                "accept": "application/json",
+                "sec-ch-ua": "\"Not=A?Brand\";v=\"99\", \"Google Chrome\";v=\"151\", \"Chromium\";v=\"151\"",
+                "content-type": "application/json",
+                "sec-ch-ua-mobile": "?1",
+                "origin": "https://whocalls.id.kaspersky.com",
+                "sec-fetch-site": "cross-site",
+                "sec-fetch-mode": "cors",
+                "sec-fetch-dest": "empty",
+                "referer": "https://whocalls.id.kaspersky.com/",
+                "accept-encoding": "gzip, deflate, br, zstd",
+                "accept-language": "en-US,en;q=0.9,id-ID;q=0.8,id;q=0.7",
+                "priority": "u=1, i"
+            }
+        },
+        "cari_nomor_serupa": {
+            "url": "https://api-router.kaspersky-labs.com/whocalls/similar-numbers",
+            "method": "GET",
+            "params": {
+                "region": "ID",
+                "number": "NOMOR_TUJUAN"
+            },
+            "headers": {
+                "sec-ch-ua-platform": "\"Android\"",
+                "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36",
+                "accept": "application/json",
+                "sec-ch-ua": "\"Not=A?Brand\";v=\"99\", \"Google Chrome\";v=\"151\", \"Chromium\";v=\"151\"",
+                "content-type": "application/json",
+                "sec-ch-ua-mobile": "?1",
+                "origin": "https://whocalls.id.kaspersky.com",
+                "sec-fetch-site": "cross-site",
+                "sec-fetch-mode": "cors",
+                "sec-fetch-dest": "empty",
+                "referer": "https://whocalls.id.kaspersky.com/",
+                "accept-encoding": "gzip, deflate, br, zstd",
+                "accept-language": "en-US,en;q=0.9,id-ID;q=0.8,id;q=0.7",
+                "priority": "u=1, i"
+            }
+        }
+    }
+}</pre>
+          </div>
+        </div>
+      </div>
+    </nav>
   </main>
 
   <div class="player">
@@ -406,7 +1074,7 @@
   <audio id="bgm" src="hacker.mp3" loop preload="none"></audio>
 
   <script>
-    // ===== faint ink-rain (kept, toned way down so it reads as texture not "hacker matrix") =====
+    // ===== faint ink-rain =====
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
     function resizeCanvas(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -480,7 +1148,7 @@
     }
     if (!reduceMotion) requestAnimationFrame(animateParticles);
 
-    // ===== subtle periodic wobble (replaces old RGB-split glitch) =====
+    // ===== subtle periodic wobble =====
     const wrapper = document.querySelector('.glitch-wrapper');
     if (!reduceMotion){
       setInterval(() => {
@@ -543,6 +1211,38 @@
           alert('🎮 Cheat Code Activated! NightStrom Mode ON! 🪽🕊️');
         }, 700);
       }
+    });
+
+    // ===== Copy button functionality =====
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const targetId = this.getAttribute('data-copy');
+        const targetEl = document.getElementById(targetId);
+        if (targetEl) {
+          navigator.clipboard.writeText(targetEl.textContent.trim()).then(() => {
+            this.textContent = 'Copied!';
+            this.classList.add('copied');
+            setTimeout(() => {
+              this.textContent = 'Copy';
+              this.classList.remove('copied');
+            }, 2000);
+          }).catch(() => {
+            // Fallback
+            const range = document.createRange();
+            range.selectNode(targetEl);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand('copy');
+            window.getSelection().removeAllRanges();
+            this.textContent = 'Copied!';
+            this.classList.add('copied');
+            setTimeout(() => {
+              this.textContent = 'Copy';
+              this.classList.remove('copied');
+            }, 2000);
+          });
+        }
+      });
     });
   </script>
 
