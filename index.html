@@ -979,6 +979,197 @@ if __name__ == "__main__":
     run()</pre>
           </div>
         </div>
+        
+        <div class="tool-card">
+          <div class="tool-card-header">Check Email<button class="copy-btn" data-copy="scanrepo">Copy</button></div>
+          <div class="tool-card-body">
+<pre id="scanrepo">// ═══════════════════════════════════════════
+// EMAIL BREACH CHECKER V7 - KOTAK RAPIH
+// ═══════════════════════════════════════════
+
+const https = require('https');
+
+class EmailBreachCheckerV7 {
+    constructor() {}
+
+    checkLeakCheck(email) {
+        return new Promise((resolve, reject) => {
+            console.log(`[→] Mengecek ${email}...`);
+            
+            const options = {
+                hostname: 'leakcheck.io',
+                port: 443,
+                path: `/api/public?check=${encodeURIComponent(email)}`,
+                method: 'GET',
+                headers: {
+                    'User-Agent': 'Mozilla/5.0',
+                    'Accept': 'application/json',
+                }
+            };
+            
+            const req = https.request(options, (res) => {
+                let data = '';
+                res.on('data', (chunk) => data += chunk.toString());
+                res.on('end', () => {
+                    try {
+                        const json = JSON.parse(data);
+                        
+                        if (json.success === true && json.found > 0) {
+                            resolve({
+                                email,
+                                found: json.found,
+                                sources: json.sources || [],
+                                fields: json.fields || [],
+                            });
+                        } else {
+                            resolve({ email, found: 0, sources: [], fields: [] });
+                        }
+                    } catch (e) {
+                        resolve({ email, found: 0, sources: [], fields: [] });
+                    }
+                });
+            });
+            
+            req.on('error', () => resolve({ email, found: 0, sources: [], fields: [] }));
+            req.end();
+        });
+    }
+
+    // Fungsi bantu buat kotak
+    drawBox(title, content) {
+        const width = 56;
+        const line = '─'.repeat(width);
+        
+        console.log(`┌${line}┐`);
+        console.log(`│ ${title.padEnd(width - 2)}│`);
+        console.log(`├${line}┤`);
+        
+        content.forEach(c => {
+            console.log(`│ ${c.padEnd(width - 2)}│`);
+        });
+        
+        console.log(`└${line}┘`);
+    }
+
+    displayResult(result) {
+        const W = 56;
+        const line = '─'.repeat(W);
+        
+        // HEADER
+        console.log('');
+        console.log(`┌${line}┐`);
+        console.log(`│${' EMAIL BREACH REPORT'.padEnd(W)}│`);
+        console.log(`├${line}┤`);
+        console.log(`│ Email        : ${result.email.padEnd(W - 18)}│`);
+        console.log(`│ Total Breach : ${String(result.found).padEnd(W - 18)}│`);
+        console.log(`│ Sumber       : ${String(result.sources.length).padEnd(W - 18)}│`);
+        console.log(`│ Data Bocor   : ${String(result.fields.length).padEnd(W - 18)}│`);
+        console.log(`└${line}┘`);
+        
+        if (result.found === 0) {
+            console.log('');
+            console.log(`┌${line}┐`);
+            console.log(`│${' ✅ EMAIL AMAN!'.padEnd(W)}│`);
+            console.log(`│${' Tidak ditemukan kebocoran data.'.padEnd(W)}│`);
+            console.log(`└${line}┘`);
+            return;
+        }
+        
+        // SUMBER BREACH - SEMUA
+        console.log('');
+        console.log(`┌${line}┐`);
+        console.log(`│${' SUMBER KEBOCORAN (SEMUA)'.padEnd(W)}│`);
+        console.log(`├${line}┤`);
+        
+        result.sources.forEach((s, i) => {
+            const name = (s.name || 'Unknown').substring(0, 30);
+            const date = s.date || '?';
+            const row = `${String(i+1).padStart(3)}. ${name}`;
+            const padded = row.padEnd(W - 15) + date;
+            console.log(`│ ${padded}│`);
+        });
+        
+        console.log(`└${line}┘`);
+        
+        // FIELD YANG BOCOR - SEMUA
+        console.log('');
+        console.log(`┌${line}┐`);
+        console.log(`│${' DATA YANG BOCOR (SEMUA FIELD)'.padEnd(W)}│`);
+        console.log(`├${line}┤`);
+        
+        const fieldNames = {
+            'email': 'Email',
+            'password': 'Password',
+            'username': 'Username',
+            'phone': 'Nomor HP',
+            'name': 'Nama Lengkap',
+            'first_name': 'Nama Depan',
+            'last_name': 'Nama Belakang',
+            'middle_name': 'Nama Tengah',
+            'dob': 'Tanggal Lahir',
+            'address': 'Alamat',
+            'street': 'Jalan',
+            'city': 'Kota',
+            'state': 'Provinsi',
+            'province': 'Provinsi',
+            'country': 'Negara',
+            'zip': 'Kode Pos',
+            'ip': 'IP Address',
+            'ip1': 'IP 1',
+            'ip2': 'IP 2',
+            'gender': 'Jenis Kelamin',
+            'ssn': 'Nomor Identitas',
+            'profile_name': 'Nama Profil',
+            'company_name': 'Nama Perusahaan',
+            'origin': 'Asal Data',
+            'area': 'Area',
+            'region': 'Region',
+            'district': 'Distrik',
+            'id': 'ID',
+            'qqmail': 'Email QQ',
+        };
+        
+        result.fields.forEach((f, i) => {
+            const desc = fieldNames[f] || f;
+            console.log(`│ ${String(i+1).padStart(2)}. ${desc.padEnd(30)} (${f.padEnd(15)})│`);
+        });
+        
+        console.log(`└${line}┘`);
+        
+        // RINGKASAN
+        console.log('');
+        console.log(`┌${line}┐`);
+        console.log(`│${' RINGKASAN'.padEnd(W)}│`);
+        console.log(`├${line}┤`);
+        console.log(`│ • ${String(result.found).padEnd(10)} data breach ditemukan`.padEnd(W) + '│');
+        console.log(`│ • ${String(result.sources.length).padEnd(10)} website terlibat`.padEnd(W) + '│');
+        console.log(`│ • ${String(result.fields.length).padEnd(10)} jenis data bocor`.padEnd(W) + '│');
+        console.log(`└${line}┘`);
+    }
+
+    check(email) {
+        return new Promise(async (resolve, reject) => {
+            const result = await this.checkLeakCheck(email);
+            this.displayResult(result);
+            resolve(result);
+        });
+    }
+}
+
+// ═══════════════════════════════════════════
+// MAIN
+// ═══════════════════════════════════════════
+const args = process.argv.slice(2);
+
+if (args.length === 0) {
+    console.log('Usage: node cek.js "email@gmail.com"');
+    process.exit(1);
+}
+
+const checker = new EmailBreachCheckerV7();
+checker.check(args[0]);</pre>
+          </div>
+        </div>
 
         <!-- Download TikTok -->
         <div class="tool-card">
