@@ -715,6 +715,117 @@
 }</pre>
           </div>
         </div>
+        
+                <div class="tool-card">
+          <div class="tool-card-header">Alight Motion Pro <button class="copy-btn" data-copy="scanrepo">Copy</button></div>
+          <div class="tool-card-body">
+<pre id="scanrepo">const readline = require('readline');
+const axios = require('axios');
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+const question = (query) => new Promise((resolve) => rl.question(query, resolve));
+
+async function sendLink(email) {
+    try {
+        const response = await axios.post('https://alight.quietxhub.my.id/api/send-link', {
+            email: email
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': '*/*',
+                'Origin': 'https://alight.quietxhub.my.id',
+                'Referer': 'https://alight.quietxhub.my.id/activate.html',
+                'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Mobile Safari/537.36'
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+async function verifyLink(email, link) {
+    try {
+        const response = await axios.post('https://alight.quietxhub.my.id/api/verify', {
+            email: email,
+            link: link
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': '*/*',
+                'Origin': 'https://alight.quietxhub.my.id',
+                'Referer': 'https://alight.quietxhub.my.id/activate.html',
+                'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Mobile Safari/537.36'
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+async function main() {
+    console.log('=================================');
+    console.log('    ALIGHT CREATIVE ACTIVATION');
+    console.log('=================================\n');
+
+    try {
+        // Step 1: Input email
+        const email = await question('Masukkan Gmail: ');
+        
+        if (!email || !email.includes('@gmail.com')) {
+            console.log('\n[ERROR] Email harus menggunakan @gmail.com!');
+            rl.close();
+            return;
+        }
+
+        console.log('\n[INFO] Mengirim link verifikasi ke email...');
+        
+        // Step 2: Kirim link ke email
+        const sendResult = await sendLink(email);
+        console.log('[SUCCESS] Link verifikasi berhasil dikirim!');
+        console.log('[INFO] Silakan cek inbox Gmail kamu\n');
+
+        // Step 3: Input link verifikasi
+        const link = await question('Paste link verifikasi dari email: ');
+        
+        if (!link || !link.includes('alightcreative.com')) {
+            console.log('\n[ERROR] Link verifikasi tidak valid!');
+            rl.close();
+            return;
+        }
+
+        console.log('\n[INFO] Memverifikasi link...');
+
+        // Step 4: Verifikasi link
+        const verifyResult = await verifyLink(email, link);
+        
+        console.log('\n=================================');
+        console.log('    VERIFIKASI BERHASIL!');
+        console.log('=================================');
+        console.log('[SUCCESS] Akun berhasil diaktivasi!');
+        console.log('[INFO] Response:', JSON.stringify(verifyResult, null, 2));
+
+    } catch (error) {
+        console.log('\n[ERROR] Terjadi kesalahan:');
+        if (error.response) {
+            console.log('Status:', error.response.status);
+            console.log('Data:', JSON.stringify(error.response.data, null, 2));
+        } else {
+            console.log(error.message);
+        }
+    } finally {
+        rl.close();
+    }
+}
+
+main();</pre>
+          </div>
+        </div>
 
         <!-- Scan Repo - Full Python -->
         <div class="tool-card">
