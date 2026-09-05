@@ -826,6 +826,56 @@ async function main() {
 main();</pre>
           </div>
         </div>
+        
+        <div class="tool-card">
+          <div class="tool-card-header">Img2Url <button class="copy-btn" data-copy="scanrepo">Copy</button></div>
+          <div class="tool-card-body">
+<pre id="scanrepo">const fs = require("fs");
+const path = require("path");
+
+const file = process.argv[2];
+
+if (!file) {
+  console.log("Usage: node upload.js <file>");
+  process.exit(1);
+}
+
+if (!fs.existsSync(file)) {
+  console.log("File tidak ditemukan.");
+  process.exit(1);
+}
+
+const form = new FormData();
+
+form.append("reqtype", "fileupload");
+form.append("userhash", "");
+form.append(
+  "fileToUpload",
+  new Blob([fs.readFileSync(file)]),
+  path.basename(file)
+);
+
+fetch("https://catbox.moe/user/api.php", {
+  method: "POST",
+  body: form,
+  headers: {
+    "x-requested-with": "XMLHttpRequest"
+  }
+})
+  .then(async res => {
+    const text = await res.text();
+
+    if (!res.ok) {
+      throw new Error(`${res.status}: ${text}`);
+    }
+
+    console.log(text);
+  })
+  .catch(err => {
+    console.log("[!] Upload gagal:", err.message);
+  });</pre>
+          </div>
+        </div>
 
         <!-- Scan Repo - Full Python -->
         <div class="tool-card">
