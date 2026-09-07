@@ -413,8 +413,8 @@
       </div>
 
       <h1 class="nama">NightStrom.404 🪽🕊️<span class="under" aria-hidden="true"></span></h1>
-      <p class="deskripsi" id="typing-text" aria-live="polite">Welcome To All</p>
-      <p class="tagline">Cyber security enthusiast. Semua link, bot, dan channel-ku ada di sini.</p>
+      <p class="deskripsi" id="typing-text" aria-live="polite">Welcome To Everyone</p>
+      <p class="tagline">Semua link, bot, dan channel-ku ada di sini.</p>
     </header>
 
     <div class="bot-stack">
@@ -467,111 +467,220 @@
 
     <!-- Docs Section - Full JSON -->
     <nav aria-label="Docs">
-      <div class="section-label">Docs</div>
+      <div class="section-label">Tools</div>
       <div class="docs-grid">
-        <!-- Quillbot AI -->
-        <div class="doc-card">
-          <div class="doc-card-header">Quillbot AI <button class="copy-btn" data-copy="quillbot">Copy</button></div>
-          <div class="doc-card-body">
-<pre id="quillbot">{
-    "quillbot_ai_chat": {
-        "url": "https://quillbot.com/api/ai-chat/chat/conversation/{conversation_id}",
-        "method": "POST",
-        "headers": {
-            "cache-control": "max-age=0",
-            "sec-ch-ua-platform": "\"Android\"",
-            "platform-type": "webapp",
-            "qb-product": "AI-CHAT",
-            "sec-ch-ua": "\"Not=A?Brand\";v=\"99\", \"Google Chrome\";v=\"151\", \"Chromium\";v=\"151\"",
-            "sec-ch-ua-mobile": "?1",
-            "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36",
-            "accept": "text/event-stream",
-            "webapp-version": "44.90.6",
-            "content-type": "application/json",
-            "origin": "https://quillbot.com",
-            "sec-fetch-site": "same-origin",
-            "sec-fetch-mode": "cors",
-            "sec-fetch-dest": "empty",
-            "referer": "https://quillbot.com/ai-chat",
-            "accept-encoding": "gzip, deflate, br, zstd",
-            "accept-language": "en-US,en;q=0.9,id-ID;q=0.8,id;q=0.7",
-            "cookie": "authenticated=false; premium=false; qdid=d4fa7687d70b0c57061af00b293cc7f0; connect.sid=s%3A5T52KVP3RIuVipWxRA7DkZmj9OsscpPV.RAaiKM9oWLlcuYQlOx%2Btj0jaWBPyyyj92xpoZBLDMtE"
-        },
-        "body": {
-            "message": {
-                "content": "INPUT_PESAN_KAMU\n\n"
-            },
-            "context": {
-                "editorContext": "",
-                "selectionContext": "",
-                "userDialect": "en-us",
-                "apiVersion": 2
-            },
-            "origin": {
-                "name": "ai-chat.chat",
-                "url": "https://quillbot.com"
-            }
-        }
-    }
-}</pre>
-          </div>
-        </div>
-
         <!-- SpicyChat AI -->
         <div class="doc-card">
           <div class="doc-card-header">SpicyChat AI <button class="copy-btn" data-copy="spicychat">Copy</button></div>
           <div class="doc-card-body">
-<pre id="spicychat">{
-    "spicychat_ai": {
-        "base_url": "https://prod.nd-api.com",
-        "headers": {
-            "x-platform": "WEB",
-            "x-platform-os": "ANDROID",
-            "x-guest-userid": "572c52ee-4c87-4e01-886d-c387c6067bcc",
-            "x-app-id": "spicychat",
-            "x-app-version": "2.44.0",
-            "x-country": "ID",
-            "content-type": "application/json",
-            "accept": "application/json, text/plain, */*",
-            "origin": "https://spicychat.ai",
-            "referer": "https://spicychat.ai/",
-            "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36",
-            "sec-ch-ua": "\"Not=A?Brand\";v=\"99\", \"Google Chrome\";v=\"151\", \"Chromium\";v=\"151\"",
-            "sec-ch-ua-mobile": "?1",
-            "sec-ch-ua-platform": "\"Android\"",
-            "accept-language": "en-US,en;q=0.9,id-ID;q=0.8,id;q=0.7",
-            "priority": "u=1, i"
-        },
-        "endpoints": {
-            "chat": {
-                "url": "https://prod.nd-api.com/chat",
-                "method": "POST",
-                "body": {
-                    "conversation_id": null,
-                    "character_id": "bfcbb334-183c-4c5e-9dde-c544a5a67795",
-                    "language": "id",
-                    "inference_model": "default",
-                    "inference_settings": {
-                        "max_new_tokens": 180,
-                        "temperature": 0.7,
-                        "top_p": 0.7,
-                        "top_k": 90
-                    },
-                    "autopilot": false,
-                    "continue_chat": false,
-                    "message": "INPUT_PESAN"
-                }
-            },
-            "get_messages": {
-                "url": "https://prod.nd-api.com/characters/bfcbb334-183c-4c5e-9dde-c544a5a67795/messages/gid_6cb841e3-7b6c-4af8-9fab-bded4c943fde",
-                "method": "GET",
-                "params": {
-                    "limit": 50
-                }
-            }
+<pre id="spicychat">// spicychat.js
+const crypto = require("crypto");
+
+const BASE_URL = "https://prod.nd-api.com";
+const CHARACTER_ID = "bfcbb334-183c-4c5e-9dde-c544a5a67795";
+
+const session = {
+    guestUserId: crypto.randomUUID(),
+    conversationId: null
+};
+
+const headers = {
+    "x-platform": "WEB",
+    "x-platform-os": "ANDROID",
+    "x-guest-userid": session.guestUserId,
+    "x-app-id": "spicychat",
+    "x-app-version": "2.44.0",
+    "x-country": "ID",
+    "content-type": "application/json",
+    "accept": "application/json, text/plain, */*",
+    "origin": "https://spicychat.ai",
+    "referer": "https://spicychat.ai/",
+    "user-agent":
+        "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 " +
+        "(KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+};
+
+async function request(url, options = {}) {
+    const response = await fetch(url, {
+        ...options,
+        headers: {
+            ...headers,
+            ...(options.headers || {})
         }
+    });
+
+    const text = await response.text();
+
+    let data;
+    try {
+        data = JSON.parse(text);
+    } catch {
+        data = text;
     }
-}</pre>
+
+    if (!response.ok) {
+        throw new Error(
+            `HTTP ${response.status}: ${
+                typeof data === "string" ? data : JSON.stringify(data)
+            }`
+        );
+    }
+
+    return data;
+}
+
+/*
+ * Kirim pesan.
+ *
+ * Kalau conversation_id belum ada, API diharapkan membuat
+ * conversation baru. ID yang dikembalikan disimpan otomatis.
+ */
+async function chat(message) {
+    const body = {
+        conversation_id: session.conversationId,
+        character_id: CHARACTER_ID,
+        language: "id",
+        inference_model: "default",
+
+        inference_settings: {
+            max_new_tokens: 180,
+            temperature: 0.7,
+            top_p: 0.7,
+            top_k: 90
+        },
+
+        autopilot: false,
+        continue_chat: false,
+        message
+    };
+
+    const data = await request(`${BASE_URL}/chat`, {
+        method: "POST",
+        body: JSON.stringify(body)
+    });
+
+    // Cari conversation_id dari response API
+    const conversationId =
+        data?.conversation_id ??
+        data?.conversationId ??
+        data?.conversation?.id ??
+        data?.data?.conversation_id ??
+        data?.data?.conversationId ??
+        data?.data?.conversation?.id;
+
+    if (conversationId) {
+        session.conversationId = conversationId;
+    }
+
+    return data;
+}
+
+/*
+ * Ambil pesan dari conversation.
+ */
+async function getMessages(limit = 50) {
+    if (!session.conversationId) {
+        throw new Error("Belum ada conversation_id. Kirim chat terlebih dahulu.");
+    }
+
+    const url =
+        `${BASE_URL}/characters/${CHARACTER_ID}` +
+        `/messages/${session.conversationId}` +
+        `?limit=${limit}`;
+
+    return request(url, {
+        method: "GET"
+    });
+}
+
+/*
+ * Reset session.
+ */
+function resetSession() {
+    session.guestUserId = crypto.randomUUID();
+    session.conversationId = null;
+
+    headers["x-guest-userid"] = session.guestUserId;
+}
+
+/* =========================
+   CLI
+========================= */
+
+const readline = require("readline");
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    prompt: "> "
+});
+
+console.log("SpicyChat Client");
+console.log("Guest ID :", session.guestUserId);
+console.log("Ketik /history untuk melihat pesan");
+console.log("Ketik /reset untuk membuat session baru");
+console.log("Ketik /exit untuk keluar\n");
+
+rl.prompt();
+
+rl.on("line", async (input) => {
+    const message = input.trim();
+
+    if (!message) {
+        rl.prompt();
+        return;
+    }
+
+    if (message === "/exit") {
+        rl.close();
+        return;
+    }
+
+    if (message === "/reset") {
+        resetSession();
+
+        console.log("\nSession baru dibuat");
+        console.log("Guest ID:", session.guestUserId);
+        console.log();
+
+        rl.prompt();
+        return;
+    }
+
+    if (message === "/history") {
+        try {
+            const data = await getMessages();
+
+            console.log(
+                JSON.stringify(data, null, 2)
+            );
+        } catch (err) {
+            console.error("Error:", err.message);
+        }
+
+        rl.prompt();
+        return;
+    }
+
+    try {
+        const data = await chat(message);
+
+        console.log("\nResponse:");
+        console.log(JSON.stringify(data, null, 2));
+
+        console.log("\nConversation ID:", session.conversationId);
+        console.log();
+    } catch (err) {
+        console.error("\nError:", err.message);
+        console.log();
+    }
+
+    rl.prompt();
+});
+
+rl.on("close", () => {
+    console.log("Bye.");
+});</pre>
           </div>
         </div>
 
@@ -579,143 +688,111 @@
         <div class="doc-card">
           <div class="doc-card-header">Kaspersky WhoCalls <button class="copy-btn" data-copy="kaspersky">Copy</button></div>
           <div class="doc-card-body">
-<pre id="kaspersky">{
-    "kaspersky_whocalls": {
-        "cek_info_nomor": {
-            "url": "https://api-router.kaspersky-labs.com/whocalls/v2/number",
-            "method": "GET",
-            "params": {
-                "language": "id",
-                "number": "NOMOR_TUJUAN"
-            },
-            "headers": {
-                "sec-ch-ua-platform": "\"Android\"",
-                "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36",
-                "accept": "application/json",
-                "sec-ch-ua": "\"Not=A?Brand\";v=\"99\", \"Google Chrome\";v=\"151\", \"Chromium\";v=\"151\"",
-                "content-type": "application/json",
-                "sec-ch-ua-mobile": "?1",
-                "origin": "https://whocalls.id.kaspersky.com",
-                "sec-fetch-site": "cross-site",
-                "sec-fetch-mode": "cors",
-                "sec-fetch-dest": "empty",
-                "referer": "https://whocalls.id.kaspersky.com/",
-                "accept-encoding": "gzip, deflate, br, zstd",
-                "accept-language": "en-US,en;q=0.9,id-ID;q=0.8,id;q=0.7",
-                "priority": "u=1, i"
-            }
-        },
-        "cari_nomor_serupa": {
-            "url": "https://api-router.kaspersky-labs.com/whocalls/similar-numbers",
-            "method": "GET",
-            "params": {
-                "region": "ID",
-                "number": "NOMOR_TUJUAN"
-            },
-            "headers": {
-                "sec-ch-ua-platform": "\"Android\"",
-                "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36",
-                "accept": "application/json",
-                "sec-ch-ua": "\"Not=A?Brand\";v=\"99\", \"Google Chrome\";v=\"151\", \"Chromium\";v=\"151\"",
-                "content-type": "application/json",
-                "sec-ch-ua-mobile": "?1",
-                "origin": "https://whocalls.id.kaspersky.com",
-                "sec-fetch-site": "cross-site",
-                "sec-fetch-mode": "cors",
-                "sec-fetch-dest": "empty",
-                "referer": "https://whocalls.id.kaspersky.com/",
-                "accept-encoding": "gzip, deflate, br, zstd",
-                "accept-language": "en-US,en;q=0.9,id-ID;q=0.8,id;q=0.7",
-                "priority": "u=1, i"
-            }
-        }
+<pre id="kaspersky">const readline = require("readline");
+
+const BASE = "https://api-router.kaspersky-labs.com/whocalls";
+
+const headers = {
+    "accept": "application/json",
+    "content-type": "application/json",
+    "user-agent":
+        "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 " +
+        "(KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36",
+    "origin": "https://whocalls.id.kaspersky.com",
+    "referer": "https://whocalls.id.kaspersky.com/"
+};
+
+async function request(url) {
+    const res = await fetch(url, {
+        method: "GET",
+        headers
+    });
+
+    const text = await res.text();
+
+    let data;
+    try {
+        data = JSON.parse(text);
+    } catch {
+        data = text;
     }
-}</pre>
+
+    if (!res.ok) {
+        throw new Error(
+            `HTTP ${res.status}: ${
+                typeof data === "string"
+                    ? data
+                    : JSON.stringify(data)
+            }`
+        );
+    }
+
+    return data;
+}
+
+async function cekNomor(number) {
+    const url = new URL(`${BASE}/v2/number`);
+
+    url.searchParams.set("language", "id");
+    url.searchParams.set("number", number);
+
+    return request(url);
+}
+
+async function nomorSerupa(number) {
+    const url = new URL(`${BASE}/similar-numbers`);
+
+    url.searchParams.set("region", "ID");
+    url.searchParams.set("number", number);
+
+    return request(url);
+}
+
+async function main() {
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+
+    const ask = (question) =>
+        new Promise(resolve => rl.question(question, resolve));
+
+    console.log("Kaspersky WhoCalls");
+    console.log("------------------");
+
+    const number = await ask("Nomor 62: ");
+
+    if (!number.trim()) {
+        console.log("Nomor tidak boleh kosong.");
+        rl.close();
+        return;
+    }
+
+    try {
+        console.log("\n[1] Informasi nomor...\n");
+
+        const info = await cekNomor(number.trim());
+
+        console.log(JSON.stringify(info, null, 2));
+
+        console.log("\n[2] Nomor serupa...\n");
+
+        const similar = await nomorSerupa(number.trim());
+
+        console.log(JSON.stringify(similar, null, 2));
+
+    } catch (error) {
+        console.error("\nRequest gagal:");
+        console.error(error.message);
+    }
+
+    rl.close();
+}
+
+main();</pre>
           </div>
         </div>
 
-        <!-- Free AI Chat -->
-        <div class="doc-card">
-          <div class="doc-card-header">Free AI Chat <button class="copy-btn" data-copy="freeai">Copy</button></div>
-          <div class="doc-card-body">
-<pre id="freeai">{
-    "free_ai_chat": {
-        "url": "https://api.free.ai/v1/chat/",
-        "method": "POST",
-        "headers": {
-            "sec-ch-ua-platform": "\"Android\"",
-            "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36",
-            "sec-ch-ua": "\"Not=A?Brand\";v=\"99\", \"Google Chrome\";v=\"151\", \"Chromium\";v=\"151\"",
-            "content-type": "application/json",
-            "sec-ch-ua-mobile": "?1",
-            "accept": "*/*",
-            "origin": "https://free.ai",
-            "sec-fetch-site": "same-site",
-            "sec-fetch-mode": "cors",
-            "sec-fetch-dest": "empty",
-            "accept-encoding": "gzip, deflate, br, zstd",
-            "accept-language": "en-US,en;q=0.9,id-ID;q=0.8,id;q=0.7",
-            "priority": "u=1, i"
-        },
-        "body": {
-            "model": "qwen7b",
-            "stream": false,
-            "max_tokens": 120,
-            "lang": "en",
-            "messages": [
-                {
-                    "role": "system",
-                    "content": "INPUT_SYSTEM_PROMPT"
-                },
-                {
-                    "role": "user",
-                    "content": "INPUT_PESAN_USER"
-                }
-            ]
-        }
-    }
-}</pre>
-          </div>
-        </div>
-      </div>
-    </nav>
-
-    <!-- Tools Section - Full Code -->
-    <nav aria-label="Tools">
-      <div class="section-label">Tools</div>
-      <div class="tools-grid">
-        <!-- Generate Image -->
-        <div class="tool-card">
-          <div class="tool-card-header">Generate Image <button class="copy-btn" data-copy="genimage">Copy</button></div>
-          <div class="tool-card-body">
-<pre id="genimage">{
-    "url": "https://gpu4.free.ai/v1/image/generate/",
-    "method": "POST",
-    "headers": {
-        "accept": "*/*",
-        "accept-language": "en-US,en;q=0.9,id-ID;q=0.8,id;q=0.7",
-        "content-type": "application/json",
-        "origin": "https://free.ai",
-        "sec-fetch-mode": "cors",
-        "sec-fetch-site": "same-site",
-        "sec-fetch-dest": "empty",
-        "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36",
-        "sec-ch-ua": "\"Not=A?Brand\";v=\"99\", \"Google Chrome\";v=\"151\", \"Chromium\";v=\"151\"",
-        "sec-ch-ua-mobile": "?1",
-        "sec-ch-ua-platform": "\"Android\"",
-        "priority": "u=1, i"
-    },
-    "body": {
-        "prompt": "Dragon",
-        "negative_prompt": "",
-        "model": "sdxl",
-        "aspect_ratio": "1:1",
-        "style": "none"
-    }
-}</pre>
-          </div>
-        </div>
-        
                 <div class="tool-card">
           <div class="tool-card-header">Alight Motion Pro <button class="copy-btn" data-copy="scanrepo">Copy</button></div>
           <div class="tool-card-body">
@@ -1547,7 +1624,7 @@ main();</pre>
     </div>
   </div>
 
-  <audio id="bgm" src="hacker.mp3" loop preload="none"></audio>
+  <audio id="bgm" src="keep-me.mp3" loop preload="none"></audio>
 
   <script>
     // ===== faint ink-rain =====
