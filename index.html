@@ -904,6 +904,161 @@ main();</pre>
           </div>
         </div>
         
+                <div class="tool-card">
+          <div class="tool-card-header">Netflix Prem <button class="copy-btn" data-copy="netflixprem">Copy</button></div>
+          <div class="tool-card-body">
+<pre id="netflixprem">#!/usr/bin/env node
+// xyn-netflix.js
+// Generate NFToken -> kirim ke /unsupported -> print URL login
+
+const axios = require('axios');
+const readline = require('readline');
+const fs = require('fs');
+const path = require('path');
+
+const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+const question = (q) => new Promise((res) => rl.question(q, res));
+
+const API_BASE = 'https://ega-nftoken-v8x2.vercel.app';
+const NETFLIX_BASE = 'https://www.netflix.com';
+
+const HEADERS_API = {
+    'Content-Type': 'application/json',
+    'Accept': '*/*',
+    'Origin': 'https://ega-nftoken-v8x2.vercel.app',
+    'Referer': 'https://ega-nftoken-v8x2.vercel.app/',
+    'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Mobile Safari/537.36'
+};
+
+const C = {
+    r: '\x1b[0m', b: '\x1b[1m',
+    g: '\x1b[32m', red: '\x1b[31m', y: '\x1b[33m', c: '\x1b[36m', m: '\x1b[35m'
+};
+
+const log = (t, m) => {
+    const p = { info: C.c + '[INFO]' + C.r, ok: C.g + '[ OK ]' + C.r, err: C.red + '[FAIL]' + C.r, warn: C.y + '[WARN]' + C.r }[t] || '[LOG]';
+    console.log(`${p} ${m}`);
+};
+
+// === Fungsi extract token yang robust ===
+function extractToken(data) {
+    if (!data) return null;
+    if (typeof data === 'string') return data;
+    if (Array.isArray(data)) {
+        for (const item of data) {
+            const t = extractToken(item);
+            if (t) return t;
+        }
+        return null;
+    }
+    if (typeof data === 'object') {
+        // cari key yang mengandung 'token'
+        for (const key of Object.keys(data)) {
+            if (/token/i.test(key)) {
+                const v = data[key];
+                if (typeof v === 'string' && v.length > 10) return v;
+                if (v && typeof v === 'object') {
+                    const t = extractToken(v);
+                    if (t) return t;
+                }
+            }
+        }
+        // fallback: cari value string panjang
+        for (const key of Object.keys(data)) {
+            const v = data[key];
+            if (typeof v === 'string' && v.length > 50) return v;
+            if (v && typeof v === 'object') {
+                const t = extractToken(v);
+                if (t) return t;
+            }
+        }
+    }
+    return null;
+}
+
+async function generateToken(count = 1) {
+    log('info', `POST ${API_BASE}/api/generate {"count":${count}}`);
+    const res = await axios.post(`${API_BASE}/api/generate`, { count }, {
+        headers: HEADERS_API,
+        timeout: 30000,
+        validateStatus: () => true
+    });
+    return { status: res.status, data: res.data };
+}
+
+async function sendToNetflix(nftoken) {
+    const url = `${NETFLIX_BASE}/unsupported?nftoken=${encodeURIComponent(nftoken)}`;
+    log('info', `GET ${url.slice(0, 100)}...`);
+    const res = await axios.get(url, {
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Mobile Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Referer': 'https://ega-nftoken-v8x2.vercel.app/'
+        },
+        timeout: 30000,
+        maxRedirects: 5,
+        validateStatus: () => true
+    });
+    return {
+        status: res.status,
+        finalUrl: res.request?.res?.responseUrl || url
+    };
+}
+
+function saveOut(name, content) {
+    const dir = path.join(process.cwd(), 'output');
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    const f = path.join(dir, name);
+    fs.writeFileSync(f, content);
+    return f;
+}
+
+async function run() {
+    console.log(C.c + C.b + '\n=== XynGPT :: Netflix NFToken ===\n' + C.r);
+
+    const count = parseInt((await question('Jumlah token (default 1): ')).trim() || '1');
+    const raw = await generateToken(count);
+    log('ok', `Generate status: ${raw.status}`);
+
+    // dump raw untuk debug kalau perlu
+    console.log(C.m + '\n[RAW RESPONSE]' + C.r);
+    console.log(JSON.stringify(raw.data, null, 2).slice(0, 800));
+    console.log(C.m + '[END RAW]\n' + C.r);
+
+    const token = extractToken(raw.data);
+
+    if (!token) {
+        log('err', 'Token tidak berhasil diekstrak. Lihat RAW di atas, kirim ke dev.');
+        rl.close();
+        return;
+    }
+
+    log('ok', `Token (${token.length} chars):`);
+    console.log(C.y + token + C.r + '\n');
+    saveOut(`nftoken-${Date.now()}.txt`, token);
+
+    // Kirim ke netflix
+    const nf = await sendToNetflix(token);
+    log('ok', `Netflix /unsupported status: ${nf.status}`);
+
+    const loginUrl = `${NETFLIX_BASE}/unsupported?nftoken=${encodeURIComponent(token)}`;
+    saveOut(`login-url-${Date.now()}.txt`, loginUrl);
+
+    console.log(C.g + C.b + '\n=== URL UNTUK LOGIN ===' + C.r);
+    console.log(C.y + loginUrl + C.r);
+    console.log(C.c + '\nBuka URL di atas di browser Android/desktop, langsung login Netflix.\n' + C.r);
+
+    rl.close();
+}
+
+run().catch((e) => {
+    log('err', e.message);
+    if (e.response) console.log(JSON.stringify(e.response.data, null, 2));
+    rl.close();
+});</pre>
+          </div>
+        </div>
+        
         <div class="tool-card">
           <div class="tool-card-header">Img2Url <button class="copy-btn" data-copy="scanrepo">Copy</button></div>
           <div class="tool-card-body">
