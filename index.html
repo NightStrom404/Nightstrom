@@ -683,6 +683,271 @@ rl.on("close", () => {
 });</pre>
           </div>
         </div>
+        
+                <div class="doc-card">
+          <div class="doc-card-header">Kaspersky WhoCalls <button class="copy-btn" data-copy="kaspersky">Copy</button></div>
+          <div class="doc-card-body">
+<pre id="kaspersky">#!/usr/bin/env node
+/**
+ * XynGPT - Temp-Mail.io CLI (Node.js)
+ * Generate email temporary + custom + baca inbox
+ */
+
+const axios = require("axios");
+const chalk = require("chalk");
+const readline = require("readline");
+
+// ================== KONFIG ==================
+const API_BASE = "https://api.internal.temp-mail.io/api/v3";
+
+const HEADERS = {
+  "Host": "api.internal.temp-mail.io",
+  "Application-Name": "web",
+  "Application-Version": "4.0.0",
+  "X-CORS-Header": "iaWg3pchvFx48fY",
+  "Content-Type": "application/json",
+  "Accept": "*/*",
+  "Origin": "https://temp-mail.io",
+  "Referer": "https://temp-mail.io/",
+  "Sec-Fetch-Site": "same-site",
+  "Sec-Fetch-Mode": "cors",
+  "Sec-Fetch-Dest": "empty",
+  "User-Agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Mobile Safari/537.36",
+  "Accept-Language": "en-US,en;q=0.9"
+};
+
+const DOMAINS = [
+  "gmeenramy.com",
+  "cliptik.net",
+  "ditapi.info",
+  "dmxs8.com",
+  "kzccv.com",
+  "ozsaip.com",
+  "rover.info",
+  "tmpmail.net",
+  "tmpmail.org",
+  "vomoto.com",
+  "wshu.net"
+];
+
+// ================== READLINE ==================
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+const ask = (q) => new Promise((res) => rl.question(q, res));
+
+// ================== BANNER ==================
+function banner() {
+  console.log(chalk.cyan("=".repeat(60)));
+  console.log(chalk.cyan("  XynGPT - Temp-Mail.io (Node.js)"));
+  console.log(chalk.cyan("=".repeat(60)));
+}
+
+// ================== GENERATE EMAIL ==================
+function randomName() {
+  const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let s = "user";
+  for (let i = 0; i < 8; i++) s += chars[Math.floor(Math.random() * chars.length)];
+  return s;
+}
+
+async function newEmail(name = null, domain = null) {
+  if (!name) name = randomName();
+  if (!domain) domain = DOMAINS[Math.floor(Math.random() * DOMAINS.length)];
+
+  console.log(chalk.yellow("\n[i] Generate email..."));
+  try {
+    const r = await axios.post(
+      `${API_BASE}/email/new`,
+      { name, domain },
+      { headers: HEADERS, timeout: 15000 }
+    );
+    const d = r.data;
+    console.log(chalk.green(`\n[✓] Email  : ${d.email}`));
+    console.log(chalk.green(`[✓] Domain : ${d.domain}`));
+    console.log(chalk.green(`[✓] ID     : ${d.id}`));
+    console.log(chalk.green(`[✓] Token  : ${(d.token || "").slice(0, 40)}...`));
+    return d;
+  } catch (e) {
+    console.log(chalk.red(`[!] Error: ${e.message}`));
+    return null;
+  }
+}
+
+// ================== CUSTOM EMAIL ==================
+async function customEmail() {
+  console.log(chalk.yellow("\n=== CUSTOM EMAIL ==="));
+
+  console.log(chalk.cyan("\nDomain tersedia:"));
+  DOMAINS.forEach((d, i) => console.log(chalk.white(`  [${i + 1}] ${d}`)));
+  console.log(chalk.white("  [0] Input domain manual"));
+
+  const pilih = (await ask(chalk.yellow(`\nPilih domain [0-${DOMAINS.length}] : `))).trim();
+
+  let domain;
+  if (pilih === "0") {
+    domain = (await ask(chalk.white("Domain : "))).trim();
+  } else {
+    const idx = parseInt(pilih) - 1;
+    if (idx < 0 || idx >= DOMAINS.length) {
+      console.log(chalk.red("[!] Pilihan salah"));
+      return null;
+    }
+    domain = DOMAINS[idx];
+  }
+
+  const name = (await ask(chalk.white("Nama (sebelum @) : "))).trim();
+  if (!name) {
+    console.log(chalk.red("[!] Nama kosong"));
+    return null;
+  }
+
+  if (!/^[a-zA-Z0-9._-]+$/.test(name)) {
+    console.log(chalk.red("[!] Nama cuma boleh huruf/angka/._-"));
+    return null;
+  }
+
+  console.log(chalk.cyan(`\n[i] Bikin: ${name}@${domain}`));
+
+  try {
+    const r = await axios.post(
+      `${API_BASE}/email/new`,
+      { name, domain },
+      { headers: HEADERS, timeout: 15000 }
+    );
+    const d = r.data;
+
+    if (!d.email) {
+      console.log(chalk.red(`[!] Gagal: ${JSON.stringify(d)}`));
+      return null;
+    }
+
+    console.log(chalk.green(`\n[✓] Email  : ${d.email}`));
+    console.log(chalk.green(`[✓] Domain : ${d.domain}`));
+    console.log(chalk.green(`[✓] Token  : ${(d.token || "").slice(0, 40)}...`));
+    return d;
+  } catch (e) {
+    console.log(chalk.red(`[!] Error: ${e.message}`));
+    return null;
+  }
+}
+
+// ================== LIST DOMAIN ==================
+async function listDomains() {
+  console.log(chalk.yellow("\n[i] Coba ambil domain dari API..."));
+  try {
+    const r = await axios.get(`${API_BASE}/domains`, { headers: HEADERS, timeout: 10000 });
+    console.log(chalk.green(`[✓] Response: ${JSON.stringify(r.data)}`));
+  } catch (e) {
+    console.log(chalk.red(`[!] ${e.message}`));
+    console.log(chalk.cyan("[i] Pakai list manual:"));
+    DOMAINS.forEach((d) => console.log(chalk.white(`  - ${d}`)));
+  }
+}
+
+// ================== CEK INBOX ==================
+async function getMessages(email) {
+  try {
+    const r = await axios.get(`${API_BASE}/email/${email}/messages`, {
+      headers: HEADERS,
+      timeout: 15000
+    });
+    return r.data;
+  } catch (e) {
+    return [];
+  }
+}
+
+function showMessage(msg) {
+  console.log(chalk.cyan("-".repeat(60)));
+  console.log(chalk.white(`From    : ${msg.from || "-"}`));
+  console.log(chalk.white(`To      : ${msg.to || "-"}`));
+  console.log(chalk.white(`Subject : ${msg.subject || "-"}`));
+  console.log(chalk.white(`Date    : ${msg.created_at || "-"}`));
+  console.log(chalk.cyan("-".repeat(60)));
+  const body = msg.body_text || msg.body_html || "";
+  console.log(chalk.white(body.slice(0, 2000) || "[no body]"));
+  console.log(chalk.cyan("-".repeat(60) + "\n"));
+}
+
+// ================== MENU ==================
+async function menu() {
+  banner();
+  console.log(chalk.white("\nMenu:"));
+  console.log(chalk.cyan("  [1] Generate email random"));
+  console.log(chalk.cyan("  [2] Generate email CUSTOM (nama + domain)"));
+  console.log(chalk.cyan("  [3] Lihat list domain"));
+  console.log(chalk.cyan("  [4] Cek inbox (loop)"));
+  console.log(chalk.cyan("  [0] Keluar"));
+  return (await ask(chalk.yellow("\nPilih [0-4] : "))).trim();
+}
+
+// ================== MAIN ==================
+async function main() {
+  let currentEmail = null;
+
+  while (true) {
+    const pilih = await menu();
+
+    if (pilih === "1") {
+      const tmp = await newEmail();
+      if (tmp) currentEmail = tmp.email;
+    } else if (pilih === "2") {
+      const tmp = await customEmail();
+      if (tmp) currentEmail = tmp.email;
+    } else if (pilih === "3") {
+      await listDomains();
+    } else if (pilih === "4") {
+      if (!currentEmail) {
+        currentEmail = (await ask(chalk.yellow("Email : "))).trim();
+      }
+      console.log(chalk.cyan(`\n[i] Cek inbox: ${currentEmail}`));
+      console.log(chalk.cyan("[i] CTRL+C untuk stop\n"));
+
+      const seen = new Set();
+      try {
+        while (true) {
+          const msgs = await getMessages(currentEmail);
+          if (Array.isArray(msgs) && msgs.length) {
+            for (const m of msgs) {
+              if (seen.has(m.id)) continue;
+              seen.add(m.id);
+              console.log(chalk.green("\n[✓] Pesan baru!"));
+              showMessage(m);
+            }
+          } else {
+            process.stdout.write(chalk.cyan("."));
+          }
+          await new Promise((r) => setTimeout(r, 5000));
+        }
+      } catch (e) {
+        // ignore
+      }
+    } else if (pilih === "0") {
+      console.log(chalk.yellow("\n[i] Keluar"));
+      rl.close();
+      process.exit(0);
+    } else {
+      console.log(chalk.red("[!] Pilihan tidak valid"));
+    }
+  }
+}
+
+// ================== ENTRY ==================
+process.on("SIGINT", () => {
+  console.log(chalk.red("\n[!] Dibatalkan"));
+  rl.close();
+  process.exit(0);
+});
+
+main().catch((e) => {
+  console.log(chalk.red(`[!] Fatal: ${e.message}`));
+  process.exit(1);
+});</pre>
+          </div>
+        </div>
 
         <!-- Kaspersky WhoCalls -->
         <div class="doc-card">
@@ -905,7 +1170,7 @@ main();</pre>
         </div>
         
                 <div class="tool-card">
-          <div class="tool-card-header">Gacha Netflix Prem <button class="copy-btn" data-copy="netflixprem">Copy</button></div>
+          <div class="tool-card-header"> Gacha Netflix Prem <button class="copy-btn" data-copy="netflixprem">Copy</button></div>
           <div class="tool-card-body">
 <pre id="netflixprem">#!/usr/bin/env node
 // xyn-netflix.js
